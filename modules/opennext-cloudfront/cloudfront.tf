@@ -272,6 +272,19 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
 
   ordered_cache_behavior {
+    path_pattern     = "/scripts/*"
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = local.assets_origin_id
+
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.response_headers_policy.id
+    cache_policy_id            = contains(var.no_cache_paths, "/scripts/*") ? data.aws_cloudfront_cache_policy.no_cache.id : aws_cloudfront_cache_policy.cache_policy.id
+
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+  }
+
+  ordered_cache_behavior {
     path_pattern     = "/_next/data/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
