@@ -80,6 +80,13 @@ resource "aws_lambda_permission" "function_url_permission" {
   function_url_auth_type = "NONE"
 }
 
+resource "aws_lambda_permission" "invoke_permissions" {
+  action                   = "lambda:InvokeFunction"
+  function_name            = aws_lambda_function.function.function_name
+  principal                = "*"
+  invoked_via_function_url = true
+}
+
 resource "aws_security_group" "function_sg" {
   # checkov:skip=CKV2_AWS_5:Security Group is attached in dynamic vpc_config block
   # checkov:skip=CKV_AWS_23:Rule descriptions are dynamic and not picked up by Checkov

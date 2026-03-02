@@ -35,7 +35,7 @@ variable "create_route53_records" {
 
 variable "hosted_zone_id" {
   type        = string
-  default = ""
+  default     = ""
   description = "The Route 53 hosted zone ID of the domain name"
 }
 
